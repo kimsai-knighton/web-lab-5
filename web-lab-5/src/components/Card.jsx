@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-function ExpCard({id, name, discrpt, status, onDelete}) {
+function ExpCard({id, name, deadline}) {
 
 
 	return (
@@ -18,20 +18,8 @@ function ExpCard({id, name, discrpt, status, onDelete}) {
 		backgroundColor: "#f9ecd7"
 	}}>
 		<h4 style={{ margin: 0 }}>{name}</h4>
-		<p style={{ margin: 0, textAlign: 'left'}}>{discrpt}</p>
 
-		<button 
-                onClick={() => onDelete(id)} 
-                style={{
-					backgroundColor: "#ffffff00",
-                    border: 'none',
-                    cursor: 'pointer',
-                }}
-            >❌
-        </button>
-
-		<p style={{margin: 0, textAlign: 'left'}}>{status}</p>
-
+		<p style={{margin: 0, textAlign: 'left'}}>{deadline}</p>
     </div>
   );
 }

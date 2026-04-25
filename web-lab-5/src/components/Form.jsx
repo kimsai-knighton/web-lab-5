@@ -2,31 +2,31 @@ import { useState } from 'react';
 function Form({ onAddExperiment, count }) {
 
 	const [name, setName] = useState('');
-	const [discrpt, setDiscrpt] = useState('');
-	const [status, setStatus] = useState('future');
+	const [deadline, setDeadline] = useState('');
+
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 	
-		const statusWithEmoji = 
-			status === 'now' ? "В процессе ⌛" : 
-			status === 'done' ? "Завершён ✅" : "В планах 🕒";
-	
-		onAddExperiment({ name, discrpt, status: statusWithEmoji });
+		onAddExperiment({ name, deadline });
 
-		setName('');
-		setDiscrpt('');
-		setStatus('future');
+		setDeadline('');
 	};
 
+	const day = new Date().getDate()
+	const mth = new Date().getMonth()
+	const year = new Date().getFullYear()
 
+	const monthNames = [
+		"января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"
+	];
 
 	return (
 	<div style={{ padding: '20px', fontFamily: 'Bahnschrift', color: 'black' }}>
     	
-		<h6 style={{ fontSize: '14px', marginTop: '-10px', marginBottom: '-5px', color: 'gray' }}><center>количество выполненных: {count}</center></h6>
+		<h6 style={{ fontSize: '14px', marginTop: '-10px', marginBottom: '-5px', color: 'gray' }}><center>{day} {monthNames[mth]} {year}</center></h6>
 		
-		<h2 style={{ fontSize: '20px', marginBottom: '15px', color: 'black' }}><center>Добавить новый эксперимент</center></h2>
+		<h2 style={{ fontSize: '20px', marginBottom: '15px', color: 'black' }}><center>Добавить новую задачу</center></h2>
       
     	<form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         
@@ -52,12 +52,9 @@ function Form({ onAddExperiment, count }) {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-          <label htmlFor="imgUrl">Статус:</label>
-			<select name="filter" id="filter-select" value={status} onChange={(e) => setStatus(e.target.value)} className="filter-select" >
-                <option value="future">В планах</option>
-                <option value="now">В процессе</option>
-                <option value="done">Завершён</option>
-            </select>
+          <label htmlFor="imgUrl">Дата:</label>
+			<input type="date" name="date" id="date-select" value={status} onChange={(e) => setStatus(e.target.value)} className="date-select" >
+            </input>
         </div>
 
 		

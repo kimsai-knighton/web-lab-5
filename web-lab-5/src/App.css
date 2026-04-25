@@ -1,5 +1,5 @@
 body {
-	background-color: #f3f2ee;
+	background-color: #d4e7bf;
 	margin: 0;
 }
 
@@ -22,6 +22,8 @@ body {
 	height: 420px;
 	flex-direction: column;
 
+	background-color: rgb(238, 243, 213);
+
 	margin: 5px;
 	margin-top: 30px;
 	margin-bottom: 30px;
@@ -29,19 +31,19 @@ body {
 	border-radius: 8px;
 }
 
-.filter-form {
+.date-form {
     display: flex;
     align-items: center;
     gap: 15px;
     font-family: 'Bahnschrift', sans-serif;
 }
 
-.filter-label {
+.date-label {
     font-weight: bold;
     color: #1e1e1e;
 }
 
-.filter-select {
+.date-select {
     padding: 8px 12px;
     border: 2px solid #1e1e1e;
     border-radius: 8px;

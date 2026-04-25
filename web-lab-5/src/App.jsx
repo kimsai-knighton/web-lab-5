@@ -11,19 +11,15 @@ function App() {
         return savedData ? JSON.parse(savedData) : [
             {
 				id: 1,
-				name: "♥ Электролиз",
-				discrpt: "Провести электролиз водички",
-				status: "В процессе ⌛" },
-            {
-				id: 2,
-				name: "♥ Окисление",
-				discrpt: "Провести оксиление",
-				status: "Завершён ✅" },
-            {
-				id: 3,
-				name: "♥ Растворение",
-				discrpt: "Растворить образец в кислоте",
-				status: "В планах 🕒" }
+				name: "♥ Сдать ДЗ",
+				deadline: "01.01.2000"
+			},
+			{
+				id: 1,
+				name: "♥ Сдать ЛАБУ",
+				deadline: "01.01.2001"
+			},
+
         ];
     });
 
