@@ -1,83 +1,49 @@
 import { useState } from 'react';
-function Form({ onAddExperiment, count }) {
+function Form({ onAddExperiment }) {
 
 	const [name, setName] = useState('');
-	const [discrpt, setDiscrpt] = useState('');
-	const [status, setStatus] = useState('future');
+	const [deadline, setDeadline] = useState('');
+
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 	
-		const statusWithEmoji = 
-			status === 'now' ? "В процессе ⌛" : 
-			status === 'done' ? "Завершён ✅" : "В планах 🕒";
-	
-		onAddExperiment({ name, discrpt, status: statusWithEmoji });
-
+		onAddExperiment({ name, deadline });
 		setName('');
-		setDiscrpt('');
-		setStatus('future');
+		setDeadline('');
 	};
 
+	const day = new Date().getDate()
+	const mth = new Date().getMonth()
+	const year = new Date().getFullYear()
 
+	const monthNames = [
+		"января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"
+	];
 
 	return (
-	<div style={{ padding: '20px', fontFamily: 'Bahnschrift', color: 'black' }}>
-    	
-		<h6 style={{ fontSize: '14px', marginTop: '-10px', marginBottom: '-5px', color: 'gray' }}><center>количество выполненных: {count}</center></h6>
-		
-		<h2 style={{ fontSize: '20px', marginBottom: '15px', color: 'black' }}><center>Добавить новый эксперимент</center></h2>
-      
-    	<form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-          <label htmlFor="name">Название:</label>
-          <input 
-            type="text" 
-            value={name} 
-            onChange={(e) => setName(e.target.value)} 
-            required 
-            style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: '#f3f3f3', color: 'black' }}
-          />
+        <div style={{ padding: '10px',fontFamily: 'Bahnschrift', width: '530px'}}>
+            <h6 style={{fontSize: '15px', color: 'gray', marginBottom: '-5px', textAlign: 'center' }}>
+                {day} {monthNames[mth]} {year}
+            </h6>
+            <h2 style={{ fontSize: '20px', textAlign: 'center' }}>Добавить новую задачу</h2>
+          
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                <input type="text" placeholder="Название" value={name} onChange={(e) => setName(e.target.value)} required 
+                    style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} />
+
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <label style={{ fontSize: '12px' }}>Дата дедлайна:</label>
+                    <input type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} required 
+                        style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} />
+                </div>
+
+                <button type="submit" style={{ backgroundColor: '#f3f3f3', padding: '10px', border: '2px solid #b8caa4', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
+                    Добавить задачу
+                </button>
+            </form>
         </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-          <label htmlFor="discrpt">Описание:</label>
-          <textarea 
-            value={discrpt} 
-            onChange={(e) => setDiscrpt(e.target.value)} 
-            required 
-            style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc', minHeight: '80px', backgroundColor: '#f3f3f3', color: 'black', resize: "none" }}
-          />
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-          <label htmlFor="imgUrl">Статус:</label>
-			<select name="filter" id="filter-select" value={status} onChange={(e) => setStatus(e.target.value)} className="filter-select" >
-                <option value="future">В планах</option>
-                <option value="now">В процессе</option>
-                <option value="done">Завершён</option>
-            </select>
-        </div>
-
-		
-
-        <button type="submit" style={{
-          backgroundColor: '#f3f3f3',
-          color: 'black',
-          padding: '10px',
-          border: '2px solid #e1d4ba',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-		  fontFamily: 'Bahnschrift',
-		  fontSize: '17px'
-        }}>
-          Добавить эксперимент
-        </button>
-      </form>
-    </div>
-  );
+    );
 }
 
 export default Form;

@@ -18,19 +18,18 @@ function Filter({ onFilterChange }) {
 		color: 'black',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		backgroundColor: "#f9f0ec",
-		margin: "5px",
-		marginBottom: '15px'
+		backgroundColor: "#f3f3f3",
+		margin: "15px",
+		marginBottom: '25px'
 	}}>
 		
 		<form className="filter-form">
             <label htmlFor="filter-select" className="filter-label">Показать: </label>
-            <select name="filter" id="filter-select" className="filter-select" onChange={handleChange}>
-                <option value="all">Все</option>
-                <option value="future">В планах</option>
-                <option value="now">В процессе</option>
-                <option value="done">Завершён</option>
-            </select>
+			<select onChange={handleChange} className="filter-select">
+				<option value="all">Все задания</option>
+				<option value="week">На этой неделе</option>
+				<option value="overdue">Просроченные</option>
+			</select>
         </form>
 
     </div>
