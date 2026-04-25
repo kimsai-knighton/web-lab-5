@@ -1,122 +1,82 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { useState, useEffect } from 'react'
 import './App.css'
 
+import ExpCard from './components/Card'
+import Form from './components/Form'
+import Filter from './components/Filter'
+
 function App() {
-  const [count, setCount] = useState(0)
+    const [experiments, setExperiments] = useState(() => {
+        const savedData = localStorage.getItem('experiments_list');
+        return savedData ? JSON.parse(savedData) : [
+            {
+				id: 1,
+				name: "♥ Электролиз",
+				discrpt: "Провести электролиз водички",
+				status: "В процессе ⌛" },
+            {
+				id: 2,
+				name: "♥ Окисление",
+				discrpt: "Провести оксиление",
+				status: "Завершён ✅" },
+            {
+				id: 3,
+				name: "♥ Растворение",
+				discrpt: "Растворить образец в кислоте",
+				status: "В планах 🕒" }
+        ];
+    });
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    const [filterStatus, setFilterStatus] = useState('all');
 
-      <div className="ticks"></div>
+    useEffect(() => {
+        localStorage.setItem('experiments_list', JSON.stringify(experiments));
+    }, [experiments]);
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+    const filteredExperiments = experiments.filter(exp => {
+        if (filterStatus === 'all') return true;
+        if (filterStatus === 'now') return exp.status === "В процессе ⌛";
+        if (filterStatus === 'done') return exp.status === "Завершён ✅";
+        if (filterStatus === 'future') return exp.status === "В планах 🕒";
+        return true;
+    });
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    const addNewExperiment = (newExperiment) => {
+        const ExpWithId = { ...newExperiment, id: Date.now() };
+        setExperiments([...experiments, ExpWithId]);
+    };
+
+    const deleteExperiment = (id) => {
+        setExperiments(experiments.filter(exp => exp.id !== id));
+    };
+
+	const count = experiments.filter(exp => exp.status === "Завершён ✅").length;
+
+    return (
+        <div className="my-app">
+            <div>
+                <div className="form">
+					<Form onAddExperiment={addNewExperiment} count={count} />
+                </div>
+                <div className="filter">
+                    <Filter onFilterChange={setFilterStatus} />
+                </div>
+            </div>
+
+            <div className='experiments'>
+                {filteredExperiments.map((experiment) => (
+                    <ExpCard 
+                        key={experiment.id}
+                        id={experiment.id}
+                        name={experiment.name} 
+                        discrpt={experiment.discrpt} 
+                        status={experiment.status}
+                        onDelete={deleteExperiment}
+                    />
+                ))}
+            </div>
+        </div>
+    )
 }
 
 export default App
